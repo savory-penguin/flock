@@ -1,5 +1,5 @@
-angular.module('amblr.addPOI', [])
-.controller('addPOIController', function($scope, $timeout, $ionicModal, POIs, $location, $ionicPopup, Location) {
+angular.module('amblr.addPOI', ['ngCordova'])
+.controller('addPOIController', function($scope, $ionicPlatform, $timeout, $ionicModal, $cordovaCapture, POIs, $location, $ionicPopup, Location) {
 
   $ionicModal.fromTemplateUrl('../../templates/addPOI.html', {
     scope: $scope,
@@ -100,6 +100,17 @@ angular.module('amblr.addPOI', [])
       $scope.openForm();
     }
   };
+
+  $scope.captureVideo = function() {
+    var options = {limit: 3, duration: 15};
+    $cordovaCapture.captureVideo(options).then(function(videoData) {
+      console.log('here is your video data: ', videoData);
+    }, function(err) {
+      // an error occurred;
+      console.error('error capturing video:', err);
+    });
+  };
+
   //clean up modal when done
   $scope.$on('$destroy', function() {
     $scope.modal.hide();
