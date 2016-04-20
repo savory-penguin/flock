@@ -1,13 +1,18 @@
+/*
+ *  TODO:
+ *    - Inject approriate dependencies into app
+*/
+
 // Ionic Starter App
 
 // angular.module is a global place for creating, registering and retrieving Angular modules
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
 angular.module('amblr', [
-  'ionic', 
+  'ionic',
   'ngCordova',
   'amblr.config',
-  'amblr.map', 
+  'amblr.map',
   'amblr.addPOI',
   'amblr.leftnav',
   'amblr.services',
@@ -31,7 +36,7 @@ angular.module('amblr', [
     if (window.StatusBar) {
       StatusBar.styleDefault();
     }
-  });  
+  });
   
   $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
   // when changing states, check if authentication is required
@@ -39,7 +44,7 @@ angular.module('amblr', [
       // If logged out and transitioning to a logged in page, go home instead
       event.preventDefault();
       $state.go('menu.home');
-    } 
+    }
   });
 })
 
