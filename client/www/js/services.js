@@ -59,7 +59,22 @@ angular.module ('amblr.services', [])
   return location;
 
 })
+.factory('Videos', function($cordovaCapture) {
+  var options = {limit: 3, duration: 15};
+  var videoManager = {};
 
+
+  videoManager.capture = function() {
+    return $cordovaCapture.captureVideo(options).then(function(videoData) {
+      console.log('here is your video data: ', videoData);
+      return videoData;
+    }, function(err) {
+      // an error occurred;
+      console.error('error capturing video:', err);
+    });
+  };
+  return videoManager;
+})
 .factory('CenterMap', function($rootScope) {
 
   var CenterMap = {};
