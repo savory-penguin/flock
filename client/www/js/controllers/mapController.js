@@ -185,9 +185,9 @@ angular.module('amblr.map', ['uiGmapgoogle-maps'])
 
         var icon = '';
         if ($scope.POIs[i].type === 'good') {
-           icon = '../../img/star-3.png'
+           icon = '../../img/star-3.png';
         } else {
-           icon = '../../img/pirates.png'
+           icon = '../../img/pirates.png';
         }
 
         markers.push({
