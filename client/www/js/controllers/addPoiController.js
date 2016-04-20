@@ -1,5 +1,5 @@
 angular.module('amblr.addPOI', ['ngCordova'])
-.controller('addPOIController', function($scope, $ionicPlatform, $timeout, $ionicModal, $cordovaCapture, POIs, $location, $ionicPopup, Location, Videos) {
+.controller('addPOIController', function($scope, $ionicPlatform, $timeout, $ionicModal, $cordovaCapture, POIs, $location, $ionicPopup, $cordovaFileTransfer, Location, Videos) {
 
   $ionicModal.fromTemplateUrl('../../templates/addPOI.html', {
     scope: $scope,
@@ -109,7 +109,20 @@ angular.module('amblr.addPOI', ['ngCordova'])
     //   // an error occurred;
     //   console.error('error capturing video:', err);
     // });
-    Videos.capture();
+    var server = 'http://posttestserver.com/post.php';
+    var options = {};
+
+    Videos.capture().then(function(stuff) {
+      console.log(stuff[0].localURL);
+      $cordovaFileTransfer.upload(server, stuff[0].localURL, options)
+      .then(function(result) {
+        console.log('success, here is your result: ', result);
+      }, function(err) {
+        console.error('you have an error uploading: ', err);
+      }, function(progress) {
+        console.log('something is happening ', progress);
+      });
+    });
   };
 
   //clean up modal when done
