@@ -12,3 +12,4 @@ server/node_modules
 server/logs/logs.log
 logs
 npm-debug.log
+.DS_Store
