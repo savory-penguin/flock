@@ -1,7 +1,6 @@
 /*
  *  TODO:
  *    - Inject approriate dependencies into app
- *    - Define appropriate routes for adding video
 */
 
 // Ionic Starter App
