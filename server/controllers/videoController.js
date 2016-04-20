@@ -1,4 +1,5 @@
 var fs = require('fs');
+var util = require('util');
 var mongoose = require('mongoose');
 var Video = require('../models/videoModel.js');
 var sampleVideoData = require('../data/sampleVideoData.js');
@@ -44,7 +45,7 @@ var createVideosFromData = function() {
    It will delete all data in the db, if this is
    not wanted, comment out this call. 
 */
-// createVideosFromData();
+createVideosFromData();
 
 exports.getAllVideo = function(req, res) {
 
@@ -59,55 +60,24 @@ exports.getAllVideo = function(req, res) {
   });
 };
 
-exports.getVideo = function(req, res) {
-  db.getUsers(username)
-    .then(function(users) {
-      console.log(users[0]);
-      var file  = users[0].profileImage;
-      var options = {
-        'Content-Type': 'video/mp4',
-        'root': __dirname + '/../uploads/' // directory which houses images
-      };
-
-      res.sendFile(file, options, function(err) {
-        if (err) {
-          console.error(err);
-          res.status(400).send();
-        }
-        else {
-          console.log('Sent:', file);
-        }
-      });
-      
-    })
-    .catch(function(error) {
-      console.log('There was an error calling db.getUsers from getProfilePhoto for user: ' + username, error);
-      res.status(500).send();
-    });
-};
-
 exports.saveVideo = function(req, res) {
+
+  logger.info('working on it');
   var form = new formidable.IncomingForm();
   form.uploadDir = "./server/uploads";
   form.keepExtensions = true;
 
   form.parse(req, function(err, fields, files) {
-    // Associate files.photo.path [location of img on FS] with the appropriate user in database
-    // var username = fields.username.toLowerCase();
+    logger.info('parsing form');
     var fileName = files.video.path.replace('server/uploads/', '');
-    var lat = fields.lat;
-    var long = fields.long;
-    var type = fields.type;
-    var description = fields.description;
-    var title = fields.title;
 
     var newVideo = {
       filename: fileName,
-      lat: lat,
-      long: long,
-      type: type,
-      description: description,
-      title: title,
+      lat: fields.lat,
+      long: fields.long,
+      type: fields.type,
+      description: fields.description,
+      title: fields.title,
     };
 
     Video.create(newVideo, function(err, newVideo) {
@@ -119,7 +89,9 @@ exports.saveVideo = function(req, res) {
 
       logger.info('Video successfully created: ' + newVideo);
 
-      res.status(201);
+      res.writeHead(201, {'content-type': 'text/plain'});
+      res.write('received upload:\n\n');
+      res.end(util.inspect({fields: fields, files: files}));
     });
   });
 };
