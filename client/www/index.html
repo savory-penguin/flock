@@ -23,6 +23,7 @@
     <script src='js/app.js'></script>
     <script src='js/controllers/mapController.js'></script>
     <script src='js/controllers/addPoiController.js'></script>
+    <script src='js/controllers/addCaptureController.js'></script>
     <script src='js/controllers/leftNavController.js'></script>
     <script src='js/controllers/signinController.js'></script>
     <script src='js/controllers/signupController.js'></script>
@@ -41,6 +42,9 @@
 <!--       <ion-tab title='Add Destination' icon='ion-android-walk' href='#/tab/addDestination'>
         <ion-nav-view name='destination-tab'></ion-nav-view>
       </ion-tab> -->
+      <ion-tab title='Capture' icon='ion-camera' ng-click='captureVideo()' ng-controller="addCaptureController">
+        <ion-nav-view name='poi-tab'></ion-nav-view>
+      </ion-tab>
       <ion-tab title='Shoot Video' icon='ion-videocamera' ng-click='captureVideo()' ng-controller="addPOIController">
         <ion-nav-view name='poi-tab'></ion-nav-view>
       </ion-tab>
