@@ -46,6 +46,9 @@ app.all('/*', function(req, res, next) {
 // middleware to configure routes for all poi-related URIs
 app.use('/api/pois', poiRouter);
 
+// middleware to configure routes for all video-related URIs
+app.use('/api/videos', poiRouter);
+
 // middleware to configure routes for all user-related URIs
 app.use('/api/users', userRouter);
 

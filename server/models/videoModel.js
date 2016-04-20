@@ -7,7 +7,7 @@ var videoSchema = mongoose.Schema({
   type: { type: String },
   description: { type: String },
   title: { type: String, required: true },
-  filepath: {type: String},
+  filename: {type: String},
 });
 
 videoSchema.plugin(timestamps);

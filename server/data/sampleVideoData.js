@@ -4,7 +4,8 @@ var videoData = [
     'long': -122.408467,
     'type': 'good',
     'description': 'Band playing on street.',
-    'title': 'I am a title 1'
+    'title': 'I am a title 1',
+    'filename': ''
   },
   {
     'lat': 37.784210,
