@@ -1,3 +1,8 @@
+/*
+ *  Refactor so that markers show up for videos
+ *  Update associated functions
+*/
+
 angular.module('amblr.map', ['uiGmapgoogle-maps'])
 .config(function($stateProvider, $urlRouterProvider, uiGmapGoogleMapApiProvider) {
   uiGmapGoogleMapApiProvider.configure({
@@ -70,7 +75,7 @@ angular.module('amblr.map', ['uiGmapgoogle-maps'])
       mouseup: function (map, eventName, originalEventArgs) {
         //if user mouses up before marker dropped, cancel it
         $scope.placeMarkerCancel();
-      }, 
+      },
       dragstart: function (map, eventName, originalEventArgs) {
         //if user starts to drag map before marker is dropped, cancel it
         $scope.placeMarkerCancel();
