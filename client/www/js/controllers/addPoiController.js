@@ -1,5 +1,5 @@
 angular.module('amblr.addPOI', ['ngCordova'])
-.controller('addPOIController', function($scope, $ionicPlatform, $timeout, $ionicModal, $cordovaCapture, POIs, $location, $ionicPopup, $cordovaFileTransfer, Location, Videos) {
+.controller('addPOIController', function($scope, $http, $ionicPlatform, $timeout, $ionicModal, $cordovaCapture, POIs, $location, $ionicPopup, $cordovaFileTransfer, Location, Videos) {
 
   $ionicModal.fromTemplateUrl('../../templates/addPOI.html', {
     scope: $scope,
@@ -102,27 +102,40 @@ angular.module('amblr.addPOI', ['ngCordova'])
   };
 
   $scope.captureVideo = function() {
-    // var options = {limit: 3, duration: 15};
-    // $cordovaCapture.captureVideo(options).then(function(videoData) {
-    //   console.log('here is your video data: ', videoData);
-    // }, function(err) {
-    //   // an error occurred;
-    //   console.error('error capturing video:', err);
-    // });
-    var server = 'http://posttestserver.com/post.php';
-    var options = {};
+    var server = 'http://localhost:3000/api/videos';
 
-    Videos.capture().then(function(stuff) {
-      console.log(stuff[0].localURL);
-      $cordovaFileTransfer.upload(server, stuff[0].localURL, options)
-      .then(function(result) {
-        console.log('success, here is your result: ', result);
-      }, function(err) {
-        console.error('you have an error uploading: ', err);
-      }, function(progress) {
-        console.log('something is happening ', progress);
-      });
+    Videos.capture().then(function(data) {
+      
+    var filePath = data[0].localURL;
+    var params = {
+      'lat': 1,
+      'long': 1,
+      'type': 'good',
+      'description': 'blah blah a video',
+      'title': 'a random video title'
+    };
+
+
+    // path to file
+    console.log(filePath);
+
+    var options = {
+      fileKey: 'file',
+      fileName: 'aFile.mov',
+      mimeType: 'video/quicktime',
+      params: params,
+      trustAllHosts: true
+    };
+
+    $cordovaFileTransfer.upload(server, filePath, options)
+    .then(function(result) {
+      console.log('success, here is your result: ', result);
+    }, function(err) {
+      console.error('you have an error uploading: ', err);
+    }, function(progress) {
+      console.log('something is happening ', progress);
     });
+  });
   };
 
   //clean up modal when done
