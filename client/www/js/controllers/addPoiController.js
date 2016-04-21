@@ -1,7 +1,8 @@
 angular.module('amblr.addPOI', ['ngCordova'])
   .controller('addPOIController', function($scope, $http, $ionicPlatform, $timeout, $ionicModal, $cordovaCapture, POIs, $location, $ionicPopup, $cordovaFileTransfer, Location, Videos) {
 
-    $ionicModal.fromTemplateUrl('../../templates/addPOI.html', {
+    // $ionicModal.fromTemplateUrl('../../templates/addPOI.html', {
+    $ionicModal.fromTemplateUrl('addCaptureModal.html', {
         scope: $scope,
         animation: 'slide-in-up',
         // backdropClickToClose: true,
@@ -17,16 +18,18 @@ angular.module('amblr.addPOI', ['ngCordova'])
     $scope.currentPOI = { type: 'good' };
 
     //save POI upon user save
+    // NOTE: this savePOI is repurposed to 
+    // upload videos, will then close modal after save
     $scope.savePOI = function() {
+      $scope.closeForm();
       //post currentPOI to the database
-      POIs.savePOI($scope.currentPOI)
+      POIs.savePOI($scope.currentPOI, $scope.filePath)
         .then(function(poi) {
           console.log('poi saved', poi);
           //clear out currentPOI
           $scope.poiSaved = poi;
           $scope.currentPOI = { type: 'good' };
           console.log($scope.currentPOI, 'after');
-          $scope.closeForm();
           // redirect to home page (may not need this)
           $scope.onSuccess();
           $location.path('/menu/home');
@@ -56,8 +59,8 @@ angular.module('amblr.addPOI', ['ngCordova'])
 
     $scope.onSuccess = function() {
       $ionicPopup.alert({
-        title: 'POI Saved!',
-        template: 'Yay! You\'ve successfully added a POI to amblr!'
+        title: 'Video Saved!',
+        template: 'Yay! You\'ve successfully added a Video to amblr!'
       });
     };
 
@@ -104,37 +107,45 @@ angular.module('amblr.addPOI', ['ngCordova'])
 
     $scope.captureVideo = function() {
       // var server = 'http://localhost:3000/api/videos'; // development
-      var server = 'http://159.203.222.162:3000/api/videos'; // remote server
+      // var server = 'http://159.203.222.162:3000/api/videos'; // remote server
       Videos.capture().then(function(data) {
+        $scope.filePath = data[0].localURL; // save filePath to scope
+        $scope.videoPath = data[0].fullPath;
 
-        Location.getCurrentPos().then(function(pos) {
-          var filePath = data[0].localURL;
-          var params = {
-            'lat': pos.lat,
-            'long': pos.long,
-            'type': 'good',
-            'description': 'blah blah a video',
-            'title': 'a random video title'
-          };
+        // open Form 
+        // Transitions to modal
+        // Modal handles file upload
+        $scope.openForm();
+        
 
-          var options = {
-            fileKey: 'file',
-            fileName: 'aFile.mov',
-            mimeType: 'video/quicktime',
-            params: params,
-            trustAllHosts: true
-          };
+        // Location.getCurrentPos().then(function(pos) {
+        //   var filePath = data[0].localURL;
+        //   var params = {
+        //     'lat': pos.lat,
+        //     'long': pos.long,
+        //     'type': 'good',
+        //     'description': 'blah blah a video',
+        //     'title': 'a random video title'
+        //   };
 
-          $cordovaFileTransfer.upload(server, filePath, options)
-            .then(function(result) {
-              console.log('success, here is your result: ');
-              console.log(result);
-            }, function(err) {
-              console.error('you have an error uploading: ', err);
-            }, function(progress) {
-              console.log('' + (Math.floor((progress.loaded / progress.total) * 100)) + '%' + ' ' + 'uploaded');
-            });
-        });
+        //   var options = {
+        //     fileKey: 'file',
+        //     fileName: 'aFile.mov', // set ext based on filePath
+        //     mimeType: 'video/quicktime', // set mimetype based on filePath
+        //     params: params,
+        //     trustAllHosts: true
+        //   };
+
+        //   $cordovaFileTransfer.upload(server, filePath, options)
+        //     .then(function(result) {
+        //       console.log('success, here is your result: ');
+        //       console.log(result);
+        //     }, function(err) {
+        //       console.error('you have an error uploading: ', err);
+        //     }, function(progress) {
+        //       console.log('' + (Math.floor((progress.loaded / progress.total) * 100)) + '%' + ' ' + 'uploaded');
+        //     });
+        // });
       });
     };
 
