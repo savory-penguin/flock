@@ -85,6 +85,9 @@
               <input type="text" placeholder="Describe what this POI is" ng-model="currentPOI.description">
             </label>
             <div class="row">
+            <video controls='controls'>
+              <source src={{videoPath}} type='video/mp4'>
+            </video>
             <button class="button col block button-dark" ng-click="savePOI()">Add POI</button>
             </div>
           </div>
