@@ -66,10 +66,9 @@ exports.saveVideo = function(req, res) {
   var form = new formidable.IncomingForm();
   form.uploadDir = "./server/uploads";
   form.keepExtensions = true;
-
   form.parse(req, function(err, fields, files) {
     logger.info('parsing form');
-    var fileName = files.video.path.replace('server/uploads/', '');
+    var fileName = files.file.path.replace('server/uploads/', '');
 
     var newVideo = {
       filename: fileName,
