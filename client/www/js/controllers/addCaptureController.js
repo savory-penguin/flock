@@ -1,4 +1,4 @@
-angular.module('amblr.addCapture', ['ngCordova'])
+angular.module('amblr.addCapture', ['ionic', 'ngCordova'])
 .controller('addCaptureController', function($scope, $ionicPlatform, $timeout, $ionicModal, $cordovaCapture, POIs, $location, $ionicPopup, Location) {
 
   // $ionicModal.fromTemplateUrl('../../templates/addCapture.html', {
@@ -106,6 +106,16 @@ angular.module('amblr.addCapture', ['ngCordova'])
     } else {
       $scope.openForm();
     }
+  };
+
+  $scope.test = function() {
+    var options = { limit: 3, duration: 3 };
+
+    $cordovaCapture.captureVideo(options).then(function(videoData) {
+      // Success! Video data is here
+    }, function(err) {
+      // An error occurred. Show a message to the user
+    });
   };
 
   $scope.captureVideo = function() {
