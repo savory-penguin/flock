@@ -21,10 +21,10 @@ Map icons taken from: Maps Icons Collection https://mapicons.mapsmarker.com
                 templateParameter="map.droppedInfoWindow.templateParameter" closeClick='closeInfoWindowClick()' ng-cloak>
         </ui-gmap-window> -->
      
-      <ui-gmap-markers models='map.videoMarkers' coords="'self'" icon="'icon'">
+      <ui-gmap-markers models='map.videoMarkers' coords="'self'" icon="'icon'" events='events'>
       </ui-gmap-markers>
 
-      <ui-gmap-marker coords='dropMarker.coords' options='dropMarker.options' events='dropMarker.events' idkey='dropMarker.id'>
+      <!-- <ui-gmap-marker coords='dropMarker.coords' options='dropMarker.options' events='dropMarker.events' idkey='dropMarker.id'> -->
  
     </ui-gmap-google-map>
 </ion-content>

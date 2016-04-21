@@ -128,6 +128,7 @@ angular.module('amblr.map', ['uiGmapgoogle-maps'])
 
     // retrieve all the POIs from server and place them on map
     $scope.addNewPOIs();
+    $scope.addNewVideos();
 
   })
   .then(function(){
@@ -152,6 +153,56 @@ angular.module('amblr.map', ['uiGmapgoogle-maps'])
   $scope.videoMarkers = [];
 
   $scope.addNewVideos = function() {
+
+    var icon = '../../img/video.png';
+
+    /*
+     * Uncomment this code for testing
+
+     $scope.map.videoMarkers = [
+       {
+         id: 1,
+         latitude: 37.7854,
+         longitude: -122.4244,
+         icon: icon,
+         description: 'video',
+         title: 'video',
+         events: {
+           click: function(map, eventName, videoMarker) {
+             alert(videoMarker.title);
+           }
+         }
+       },
+       {
+         id: 2,
+         latitude: 37.7893,
+         longitude: -122.4154,
+         icon: icon,
+         description: 'video',
+         title: 'video',
+         events: {
+           click: function(map, eventName, videoMarker) {
+             alert(videoMarker.title);
+           }
+         }
+       },
+       {
+         id: 3,
+         latitude: 37.7819,
+         longitude: -122.4139,
+         icon: icon,
+         description: 'video',
+         title: 'video',
+         events: {
+           click: function(map, eventName, videoMarker) {
+             alert(videoMarker.title);
+           }
+         }
+       }
+     ];
+     return;
+    */
+
     Videos.getVideos()
       .then(function(videos) {
         $scope.videoMarkers = videos;
@@ -166,6 +217,7 @@ angular.module('amblr.map', ['uiGmapgoogle-maps'])
             icon: icon,
             description: $scope.videoMarkers[i].description,
             title: $scope.videoMarkers[i].title,
+            filename: $scope.videoMarker[i].filename,
             events: {
               click: function (map, eventName, videoMarker) {
                   
@@ -191,6 +243,8 @@ angular.module('amblr.map', ['uiGmapgoogle-maps'])
         }
 
         $scope.map.videoMarkers = videoMarkers;
+
+        console.log('adding video markers', $scope.map.videoMarkers);
       })
       .catch(function(error) {
         console.log('Error calling getVideos', error);
@@ -307,6 +361,7 @@ angular.module('amblr.map', ['uiGmapgoogle-maps'])
   });
   $scope.$on('reloadPOIs', function() {
     $scope.addNewPOIs();
+    $scope.addNewVideos();
   });
 
   // delete the user added marker (dropMarker object)
@@ -404,6 +459,7 @@ angular.module('amblr.map', ['uiGmapgoogle-maps'])
         // $window.location.reload();
         $scope.removeMarker();
         $scope.addNewPOIs();
+        $scope.addNewVideos();
       })
       .catch(function(err) {
         console.log('error in saving poi to database', err);
