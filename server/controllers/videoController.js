@@ -47,17 +47,96 @@ var createVideosFromData = function() {
 */
 createVideosFromData();
 
-exports.getAllVideo = function(req, res) {
+// Function to calculate distance from longitude and latitude
+// No need to export
 
-  Video.find({}, function(err, videos) {
-    if (err) {
-      logger.error('ERROR in getAllVideo: ', err);
-      return res.json(err);
-    } 
+var getDistanceFromLatLonInM = function(lat1,lon1,lat2,lon2) {
+  var deg2rad = function(deg) {
+    return deg * (Math.PI/180);
+  };
+
+  var R = 6371; // Radius of the earth in km
+  var dLat = deg2rad(lat2-lat1);
+  var dLon = deg2rad(lon2-lon1);
+  var a = Math.sin(dLat/2) * Math.sin(dLat/2) + Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * Math.sin(dLon/2) * Math.sin(dLon/2);
+  var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+  var d = R * c; // Distance in km
+  return d * 1000; // Return distance in meters
+};
+
+exports.getAllVideo = function(req, res) {
+  logger.info('HEY PAY ATTENTION');
+  logger.info(req.headers);
+
+  // Video.find({}, function(err, videos) {
+  //   if (err) {
+  //     logger.error('ERROR in getAllVideo: ', err);
+  //     return res.json(err);
+  //   } 
       
-    logger.info('Successfully retrieved Videos: ' + videos);
-    res.json(videos); 
-  });
+  //   logger.info('Successfully retrieved Videos: ' + videos);
+  //   logger.info('req.body was: ' + JSON.stringify(req.body));
+  //   res.json(videos); 
+  // });
+
+  // Video.find({
+  //   $where: function(){ return (getDistanceFromLatLonInM(this.lat, this.long, req.headers.lat, req.headers.long) < 500); } 
+  // })
+  //   .exec(function(err, videos) {
+  //     if (err) {
+  //       logger.error('ERROR in getAllVideo: ', err);
+  //       return res.json(err);
+  //     } 
+        
+  //     logger.info('Successfully retrieved Videos: ' + videos);
+  //     res.json(videos); 
+  //   });
+
+  var limit = 25;
+  var maxDistance = 0.5; // in kilometers
+  maxDistance /= 100; // there are approx 100 kilometers in a degree of lat or long
+  // maxDistance /= 6371; // converting to radians, this is some stack overflow nonsense that does not work
+
+  var coords = [];
+  coords[0] = req.headers.long;
+  coords[1] = req.headers.lat;
+
+  Video.find({
+    loc: {
+      $near: coords,
+      $maxDistance: maxDistance
+    }
+  }).limit(limit)
+    .exec(function(err, locations) {
+      if (err) {
+        logger.error(err);
+        return res.json(500, err);
+      }
+      
+      res.json(200, locations);
+    });
+
+  // BELOW does not quite work for some reason, but worth keeping around in case above turns out to be wrong.
+
+  // var point = {type: "Point", coordinates: coords};
+
+  // var options = {
+  //   num: limit,
+  //   distanceMultiplier: (6371 * Math.PI / 180.0),
+  //   maxDistance: maxDistance,
+  //   spherical: true
+  // };
+
+  // Video.geoNear(coords, options, function(err, locations, stats) {
+  //   if (err) {
+  //     logger.error(err);
+  //     return res.json(500, err);
+  //   }
+    
+  //   logger.info('locations are:', locations);
+  //   res.json(200, locations);
+  // });
+
 };
 
 exports.saveVideo = function(req, res) {
@@ -72,8 +151,7 @@ exports.saveVideo = function(req, res) {
 
     var newVideo = {
       filename: fileName,
-      lat: fields.lat,
-      long: fields.long,
+      loc: [fields.long, fields.lat], // longitude always comes first
       type: fields.type,
       description: fields.description,
       title: fields.title,
