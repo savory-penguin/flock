@@ -212,8 +212,8 @@ angular.module('amblr.map', ['uiGmapgoogle-maps'])
         for (var i = 0; i < $scope.videoMarkers.length; i++) {
           videoMarkers.push({
             id: i,
-            latitude: $scope.videoMarkers[i].lat,
-            longitude: $scope.videoMarkers[i].long,
+            latitude: $scope.videoMarkers[i].loc[1],
+            longitude: $scope.videoMarkers[i].loc[0],
             icon: icon,
             description: $scope.videoMarkers[i].description,
             title: $scope.videoMarkers[i].title,
