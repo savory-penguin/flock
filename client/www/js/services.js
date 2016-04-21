@@ -4,7 +4,7 @@ angular.module ('amblr.services', [])
   var POIs = {};
 
   POIs.getPOIs = function() {
-    return $http.get(ENV.apiEndpoint + '/api/pois/')
+    return $http.get('http://159.203.222.162:3000' + '/api/pois/')
     .then(function(pois) {
       console.log('returning pois are: ', pois);
       return pois;
@@ -18,7 +18,7 @@ angular.module ('amblr.services', [])
     console.log('in save poi', POI);
     return $http({
       method: 'POST',
-      url: ENV.apiEndpoint + '/api/pois/',
+      url: 'http://159.203.222.162:3000' + '/api/pois/',
       data: JSON.stringify(POI)
     }).then(function(res) {
       $rootScope.$broadcast('reloadPOIs');
@@ -59,7 +59,7 @@ angular.module ('amblr.services', [])
   return location;
 
 })
-.factory('Videos', function($cordovaCapture) {
+.factory('Videos', function($http, $cordovaCapture, Location) {
   var options = {limit: 3, duration: 15};
   var videoManager = {};
 
@@ -73,6 +73,25 @@ angular.module ('amblr.services', [])
       console.error('error capturing video:', err);
     });
   };
+
+  videoManager.getVideos = function() {
+
+    return Location.getCurrentPos().then(function(pos) {
+      return $http.get('http://159.203.222.162:3000/api/videos', {'headers': {
+        'Content-Type': 'application/json',
+        'lat': pos.lat, // TODO: actual lat
+        'long': pos.long // TODO: actual long
+      }})
+      .then(function(response) {
+        console.log('Successfully got all videos! Returning...');
+        return response.data;
+      })
+      .catch(function(err) {
+        console.log('error in getting videos in services.js: ', err);
+      });
+    });
+  };
+
   return videoManager;
 })
 .factory('CenterMap', function($rootScope) {
