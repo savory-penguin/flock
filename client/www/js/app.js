@@ -12,8 +12,9 @@ angular.module('amblr', [
   'ionic',
   'ngCordova',
   'amblr.config',
-  'amblr.map',
-  'amblr.addPOI',
+  'amblr.map', 
+  'amblr.addPOI', // TODO: to be deleted
+  'amblr.addCapture',
   'amblr.leftnav',
   'amblr.services',
   'amblr.signin',
@@ -85,7 +86,7 @@ angular.module('amblr', [
       }
     }
   })
-  .state('menu.addPOI', {
+  .state('menu.addPOI', { // TODO: no longer using 
     url: '/addPOI',
     views: {
       'view-content': {

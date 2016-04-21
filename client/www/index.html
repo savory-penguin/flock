@@ -27,6 +27,7 @@
     <script src='js/app.js'></script>
     <script src='js/controllers/mapController.js'></script>
     <script src='js/controllers/addPoiController.js'></script>
+    <script src='js/controllers/addCaptureController.js'></script>
     <script src='js/controllers/leftNavController.js'></script>
     <script src='js/controllers/signinController.js'></script>
     <script src='js/controllers/signupController.js'></script>
@@ -42,11 +43,55 @@
 
     <!-- Global tabs for app -->
     <ion-tabs class='tabs-icon-top tabs-dark'>
-      <ion-tab title='Shoot Video' icon='ion-ios-videocam-outline' ng-click='captureVideo()' ng-controller="addPOIController">
-        <ion-nav-view name='record-video-tab'></ion-nav-view>
+<!--       <ion-tab title='Add Destination' icon='ion-android-walk' href='#/tab/addDestination'>
+        <ion-nav-view name='destination-tab'></ion-nav-view>
+      </ion-tab> -->
+      <ion-tab title='Capture' icon='ion-camera' ng-click='captureVideo()' ng-controller="addCaptureController">
+        <ion-nav-view name='poi-tab'></ion-nav-view>
+      </ion-tab>
+      <ion-tab title='Shoot Video' icon='ion-videocamera' ng-click='captureVideo()' ng-controller="addPOIController">
+        <ion-nav-view name='poi-tab'></ion-nav-view>
       </ion-tab>
       <ion-tab title='Recenter map' icon='ion-location' ng-click='recenter()' ng-controller="centerMapController">
       </ion-tab>
     </ion-tabs>
+
+    <!-- ==========================addCaptureModal.html========================== -->
+    <script id="addCaptureModal.html" type="text/ng-template">
+      <ion-modal-view class="addCapture">
+        <div class="bar bar-header bar-dark">
+          <h1 class="title">Add a POI</h1>
+          <div class="buttons">
+            <button class="button button-clear" ng-click="cancelPOI()">Cancel</button>
+          </div>
+        </div>
+        <ion-content class="has-header">
+          <div class="list">
+          <!-- icons of good or bad to based on user select TODO: get Good/Bad Options working-->
+            <label class="item item-input">
+              <span class="input-label">
+                Rate This POI
+              </span>
+                <ion-radio ng-model="currentPOI.type" value="good"><i class="icon ion-happy larger"></i></ion-radio>
+                <ion-radio ng-model="currentPOI.type" value="bad"><i class="icon ion-sad larger"></i></ion-radio>
+                <!-- <ion-radio ng-model="currentPOI.type" ng-value="meh">Meh</ion-radio> -->
+            </label>
+            <label class="item item-input item-stacked-label">
+              <span class="input-label">Title</span>
+              <input type="text" placeholder="What is this POI?" ng-model="currentPOI.title">
+            </label>
+            <label class="item item-input item-stacked-label">
+              <span class="input-label">Description</span>
+              <input type="text" placeholder="Describe what this POI is" ng-model="currentPOI.description">
+            </label>
+            <div class="row">
+            <button class="button col block button-dark" ng-click="savePOI()">Add POI</button>
+            </div>
+          </div>
+        </ion-content>
+      </ion-modal-view>
+    </script>
+    <!-- ==========================test todo html========================== -->
+
   </body>
 </html>
