@@ -90,15 +90,6 @@ angular.module('amblr', [
       }
     }
   })
-  .state('menu.addCapture', {
-    url: '/addCapture',
-    views: {
-      'view-content': {
-        templateUrl: 'templates/addCapture.html',
-        controller: 'addCaptureController'
-      }
-    }
-  })
   //to delete after testing.  use for data point entry
   .state('dataEntry', {
     url: '/test',
