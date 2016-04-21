@@ -119,7 +119,7 @@ angular.module('amblr.addCapture', ['ionic', 'ngCordova'])
   };
 
   $scope.captureVideo = function() {
-    var options = {limit: 3, duration: 3};
+    var options = {limit: 1, duration: 3};
     $cordovaCapture.captureVideo(options).then(function(videoData) {
       $scope.videoPath = videoData[0].fullPath;
       $scope.modal.show();
