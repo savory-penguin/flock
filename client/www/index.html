@@ -42,7 +42,7 @@
 
     <!-- Global tabs for app -->
     <ion-tabs class='tabs-icon-top tabs-dark'>
-      <ion-tab title='Shoot Video' icon='ion-ios-videocam-outline'>
+      <ion-tab title='Shoot Video' icon='ion-ios-videocam-outline' ng-click='captureVideo()' ng-controller="addPOIController">
         <ion-nav-view name='record-video-tab'></ion-nav-view>
       </ion-tab>
       <ion-tab title='Recenter map' icon='ion-location' ng-click='recenter()' ng-controller="centerMapController">
