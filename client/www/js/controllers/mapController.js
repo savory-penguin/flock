@@ -11,7 +11,7 @@ angular.module('amblr.map', ['uiGmapgoogle-maps'])
     libraries: 'weather,geometry,visualization'
   });
 })
-.controller('MapCtrl', function($scope, $state, $cordovaGeolocation, POIs,
+.controller('MapCtrl', function($scope, $state, $cordovaGeolocation, Videos, POIs,
   $ionicLoading, uiGmapGoogleMapApi, uiGmapIsReady, $log, $ionicSideMenuDelegate,
   $window, Location, $timeout, $location) {
 
@@ -209,7 +209,7 @@ angular.module('amblr.map', ['uiGmapgoogle-maps'])
 
         var videoMarkers = [];
 
-        for (var i = 0; i < $scope.videos.length; i++) {
+        for (var i = 0; i < $scope.videoMarkers.length; i++) {
           videoMarkers.push({
             id: i,
             latitude: $scope.videoMarkers[i].lat,
@@ -217,7 +217,7 @@ angular.module('amblr.map', ['uiGmapgoogle-maps'])
             icon: icon,
             description: $scope.videoMarkers[i].description,
             title: $scope.videoMarkers[i].title,
-            filename: $scope.videoMarker[i].filename,
+            filename: $scope.videoMarkers[i].filename,
             events: {
               click: function (map, eventName, videoMarker) {
                   
