@@ -11,7 +11,7 @@ angular.module('amblr.map', ['uiGmapgoogle-maps'])
     libraries: 'weather,geometry,visualization'
   });
 })
-.controller('MapCtrl', function($scope, $state, $cordovaGeolocation, POIs,
+.controller('MapCtrl', function($scope, $state, $cordovaGeolocation, Videos, POIs,
   $ionicLoading, uiGmapGoogleMapApi, uiGmapIsReady, $log, $ionicSideMenuDelegate,
   $window, Location, $timeout, $location) {
 
@@ -128,6 +128,7 @@ angular.module('amblr.map', ['uiGmapgoogle-maps'])
 
     // retrieve all the POIs from server and place them on map
     $scope.addNewPOIs();
+    $scope.addNewVideos();
 
   })
   .then(function(){
@@ -152,20 +153,71 @@ angular.module('amblr.map', ['uiGmapgoogle-maps'])
   $scope.videoMarkers = [];
 
   $scope.addNewVideos = function() {
+
+    var icon = '../../img/video.png';
+
+    /*
+     * Uncomment this code for testing
+
+     $scope.map.videoMarkers = [
+       {
+         id: 1,
+         latitude: 37.7854,
+         longitude: -122.4244,
+         icon: icon,
+         description: 'video',
+         title: 'video',
+         events: {
+           click: function(map, eventName, videoMarker) {
+             alert(videoMarker.title);
+           }
+         }
+       },
+       {
+         id: 2,
+         latitude: 37.7893,
+         longitude: -122.4154,
+         icon: icon,
+         description: 'video',
+         title: 'video',
+         events: {
+           click: function(map, eventName, videoMarker) {
+             alert(videoMarker.title);
+           }
+         }
+       },
+       {
+         id: 3,
+         latitude: 37.7819,
+         longitude: -122.4139,
+         icon: icon,
+         description: 'video',
+         title: 'video',
+         events: {
+           click: function(map, eventName, videoMarker) {
+             alert(videoMarker.title);
+           }
+         }
+       }
+     ];
+     return;
+    */
+
     Videos.getVideos()
       .then(function(videos) {
         $scope.videoMarkers = videos;
 
         var videoMarkers = [];
 
-        for (var i = 0; i < $scope.videos.length; i++) {
+        for (var i = 0; i < $scope.videoMarkers.length; i++) {
           videoMarkers.push({
             id: i,
-            latitude: $scope.videoMarkers[i].lat,
-            longitude: $scope.videoMarkers[i].long,
+            latitude: $scope.videoMarkers[i].loc[1],
+            longitude: $scope.videoMarkers[i].loc[0],
             icon: icon,
             description: $scope.videoMarkers[i].description,
             title: $scope.videoMarkers[i].title,
+            filename: $scope.videoMarkers[i].filename,
             events: {
               click: function (map, eventName, videoMarker) {
                   
@@ -184,6 +236,7 @@ angular.module('amblr.map', ['uiGmapgoogle-maps'])
                 //the info window only maintains the coords object so I had to store these values in it to pass to the POIInfoWindow template
                 infoWindow.coords.title = videoMarker.title;
                 infoWindow.coords.description = videoMarker.description;
+                infoWindow.coords.filename = videoMarker.filename;
                 infoWindow.show = true;
               }
             }
@@ -191,6 +244,8 @@ angular.module('amblr.map', ['uiGmapgoogle-maps'])
         }
 
         $scope.map.videoMarkers = videoMarkers;
+
+        console.log('adding video markers', $scope.map.videoMarkers);
       })
       .catch(function(error) {
         console.log('Error calling getVideos', error);
@@ -307,6 +362,7 @@ angular.module('amblr.map', ['uiGmapgoogle-maps'])
   });
   $scope.$on('reloadPOIs', function() {
     $scope.addNewPOIs();
+    $scope.addNewVideos();
   });
 
   // delete the user added marker (dropMarker object)
@@ -404,6 +460,7 @@ angular.module('amblr.map', ['uiGmapgoogle-maps'])
         // $window.location.reload();
         $scope.removeMarker();
         $scope.addNewPOIs();
+        $scope.addNewVideos();
       })
       .catch(function(err) {
         console.log('error in saving poi to database', err);
