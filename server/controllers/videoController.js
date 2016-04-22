@@ -45,7 +45,7 @@ var createVideosFromData = function() {
    It will delete all data in the db, if this is
    not wanted, comment out this call. 
 */
-createVideosFromData();
+// createVideosFromData();
 
 // Function to calculate distance from longitude and latitude
 // No need to export
