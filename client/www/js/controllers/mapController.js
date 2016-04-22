@@ -13,7 +13,7 @@ angular.module('amblr.map', ['uiGmapgoogle-maps'])
 })
 .controller('MapCtrl', function($scope, $state, $cordovaGeolocation, Videos, POIs,
   $ionicLoading, uiGmapGoogleMapApi, uiGmapIsReady, $log, $ionicSideMenuDelegate,
-  $window, Location, $timeout, $location) {
+  $window, Location, $timeout, $location, $sce) {
 
   $scope.POIs = [];
 
@@ -238,7 +238,7 @@ angular.module('amblr.map', ['uiGmapgoogle-maps'])
                 //the info window only maintains the coords object so I had to store these values in it to pass to the POIInfoWindow template
                 infoWindow.coords.title = videoMarker.title;
                 infoWindow.coords.description = videoMarker.description;
-                infoWindow.coords.filename = videoMarker.filename;
+                infoWindow.coords.filename = $sce.trustAsResourceUrl('http://10.6.29.223:3000/' + videoMarker.filename);
                 infoWindow.show = true;
               }
             }
