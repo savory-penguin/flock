@@ -4,7 +4,7 @@ var timestamps = require('mongoose-timestamp');
 var videoSchema = mongoose.Schema({
   loc: {
     type: [Number], // [<longitude>, <latitude>]
-    index: '2dsphere'
+    index: '2d'
   },
   type: { type: String },
   description: { type: String },
