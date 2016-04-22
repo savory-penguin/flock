@@ -9,7 +9,8 @@ var videoSchema = mongoose.Schema({
   type: { type: String },
   description: { type: String },
   title: { type: String, required: true },
-  filename: {type: String},
+  filename: { type: String },
+  likes: { type: Number }
 });
 
 videoSchema.plugin(timestamps);
