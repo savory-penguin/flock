@@ -16,4 +16,3 @@ videoSchema.plugin(timestamps);
 
 module.exports = mongoose.model('Video', videoSchema);
 
-
