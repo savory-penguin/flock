@@ -30,8 +30,8 @@ angular.module('amblr.services', [])
 
     var options = {
       fileKey: 'file',
-      fileName: 'aFile.mov', // set ext based on filePath
-      mimeType: 'video/quicktime', // set mimetype based on filePath
+      fileName: 'aFile.mp4', // set ext based on filePath
+      mimeType: 'video/mp4', // set mimetype based on filePath
       params: POI,
       trustAllHosts: true
     };

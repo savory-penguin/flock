@@ -94,14 +94,20 @@
         </ion-content>
       </ion-modal-view>
     </script>
+    <!-- ==========================addCaptureModal.html========================== -->
+
+    <!-- ==========================videoinfo.html========================== -->
     <script id="videoinfo.html" type="text/ng-template">
       <div class="POIbox" id="video-icon">
           <p class="title {{ coords.type }}"> {{ coords.title }} </p>
           <p>Description:  {{ coords.description }}</p>
-          <video width="60" height="60"><source src={{coords.filename}} type="video/mp4"></video> 
+          <p>Description:  {{ coords.filename }}</p>
+          <video autoplay width="120" controls='controls'>
+            <source src={{coords.filename}} type="video/mp4"/>
+          </video>           
       </div>
     </script>
-    <!-- ==========================test todo html========================== -->
+    <!-- ==========================videoinfo.html========================== -->
 
   </body>
 </html>
