@@ -38,6 +38,7 @@ angular.module('amblr.services', [])
 
     return $cordovaFileTransfer.upload(server, filePath, options)
       .then(function(result) {
+        $rootScope.$broadcast('reloadPOIs'); // tells the map controller to show new video after upload
         console.log('success, here is your result: ');
         console.log(result);
       }, function(err) {
