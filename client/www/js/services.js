@@ -4,7 +4,7 @@ angular.module('amblr.services', [])
   var POIs = {};
 
   POIs.getPOIs = function() {
-    return $http.get('http://159.203.222.162:3000' + '/api/pois/')
+    return $http.get('http://10.6.29.223:3000' + '/api/pois/')
       .then(function(pois) {
         console.log('returning pois are: ', pois);
         return pois;
@@ -18,7 +18,7 @@ angular.module('amblr.services', [])
   // uses cordova file transfer to send file
   // and other important paramaeters to server
   POIs.savePOI = function(POI, filePath) {
-    var server = 'http://159.203.222.162:3000/api/videos';
+    var server = 'http://10.6.29.223:3000/api/videos';
 
     // var params = {
     //   'lat': pos.lat,
@@ -38,10 +38,12 @@ angular.module('amblr.services', [])
 
     return $cordovaFileTransfer.upload(server, filePath, options)
       .then(function(result) {
+        $rootScope.$broadcast('reloadPOIs'); // tells the map controller to show new video after upload
         console.log('success, here is your result: ');
         console.log(result);
       }, function(err) {
-        console.error('you have an error uploading: ', err);
+        console.error('you have an error uploading: ');
+        console.error(err);
       }, function(progress) {
         console.log('' + (Math.floor((progress.loaded / progress.total) * 100)) + '%' + ' ' + 'uploaded');
       });
@@ -111,7 +113,7 @@ angular.module('amblr.services', [])
     videoManager.getVideos = function() {
 
       return Location.getCurrentPos().then(function(pos) {
-        return $http.get('http://159.203.222.162:3000/api/videos', {
+        return $http.get('http://10.6.29.223:3000/api/videos', {
             'headers': {
               'Content-Type': 'application/json',
               'lat': pos.lat, // TODO: actual lat
@@ -120,10 +122,12 @@ angular.module('amblr.services', [])
           })
           .then(function(response) {
             console.log('Successfully got all videos! Returning...');
+            console.log(response.data)
             return response.data;
           })
           .catch(function(err) {
-            console.log('error in getting videos in services.js: ', err);
+            console.log('error in getting videos in services.js: ');
+            console.log(err);
           });
       });
     };

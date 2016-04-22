@@ -13,7 +13,7 @@ angular.module('amblr.map', ['uiGmapgoogle-maps'])
 })
 .controller('MapCtrl', function($scope, $state, $cordovaGeolocation, Videos, POIs,
   $ionicLoading, uiGmapGoogleMapApi, uiGmapIsReady, $log, $ionicSideMenuDelegate,
-  $window, Location, $timeout, $location) {
+  $window, Location, $timeout, $location, $sce) {
 
   $scope.POIs = [];
 
@@ -100,7 +100,7 @@ angular.module('amblr.map', ['uiGmapgoogle-maps'])
           pixelOffset: new $window.google.maps.Size(0, -35)
         },
         show: false,
-        templateUrl: '../../templates/POIInfoWindow.html',
+        templateUrl: 'videoinfo.html',
     },
     // droppedInfoWindow: {
     //     coords: {
@@ -154,7 +154,7 @@ angular.module('amblr.map', ['uiGmapgoogle-maps'])
 
   $scope.addNewVideos = function() {
 
-    var icon = '../../img/video.png';
+    var icon = 'http://i.imgur.com/njCH5Jk.png';
 
     /*
      * Uncomment this code for testing
@@ -205,6 +205,8 @@ angular.module('amblr.map', ['uiGmapgoogle-maps'])
 
     Videos.getVideos()
       .then(function(videos) {
+        console.log('your videos from mapcontroller ')
+        console.log(videos);
         $scope.videoMarkers = videos;
 
         var videoMarkers = [];
@@ -236,7 +238,7 @@ angular.module('amblr.map', ['uiGmapgoogle-maps'])
                 //the info window only maintains the coords object so I had to store these values in it to pass to the POIInfoWindow template
                 infoWindow.coords.title = videoMarker.title;
                 infoWindow.coords.description = videoMarker.description;
-                infoWindow.coords.filename = videoMarker.filename;
+                infoWindow.coords.filename = $sce.trustAsResourceUrl('http://10.6.29.223:3000/' + videoMarker.filename);
                 infoWindow.show = true;
               }
             }
@@ -245,7 +247,8 @@ angular.module('amblr.map', ['uiGmapgoogle-maps'])
 
         $scope.map.videoMarkers = videoMarkers;
 
-        console.log('adding video markers', $scope.map.videoMarkers);
+        console.log('adding video markers');
+        console.log($scope.map.videoMarkers);
       })
       .catch(function(error) {
         console.log('Error calling getVideos', error);
