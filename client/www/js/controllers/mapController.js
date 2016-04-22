@@ -208,7 +208,6 @@ angular.module('amblr.map', ['uiGmapgoogle-maps'])
         console.log('your videos from mapcontroller ')
         console.log(videos);
         $scope.videoMarkers = videos;
-
         var videoMarkers = [];
 
         for (var i = 0; i < $scope.videoMarkers.length; i++) {
@@ -220,6 +219,7 @@ angular.module('amblr.map', ['uiGmapgoogle-maps'])
             description: $scope.videoMarkers[i].description,
             title: $scope.videoMarkers[i].title,
             filename: $scope.videoMarkers[i].filename,
+            likes: $scope.videoMarkers[i].likes || 0,
             events: {
               click: function (map, eventName, videoMarker) {
                   
@@ -239,6 +239,15 @@ angular.module('amblr.map', ['uiGmapgoogle-maps'])
                 infoWindow.coords.title = videoMarker.title;
                 infoWindow.coords.description = videoMarker.description;
                 infoWindow.coords.filename = $sce.trustAsResourceUrl('http://159.203.228.143:3000/' + videoMarker.filename);
+                infoWindow.coords.likes = videoMarker.likes;
+                infoWindow.coords.likeAlreadyClicked = false;
+                infoWindow.coords.clickLike = function() {
+                  if (!infoWindow.coords.likeAlreadyClicked) {
+                    infoWindow.coords.likes++;
+                    infoWindow.coords.likeAlreadyClicked = true;
+                    Videos.updateLikes(videoMarker.filename, infoWindow.coords.likes);
+                  }
+                };
                 infoWindow.show = true;
               }
             }

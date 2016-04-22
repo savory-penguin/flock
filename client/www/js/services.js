@@ -122,7 +122,7 @@ angular.module('amblr.services', [])
           })
           .then(function(response) {
             console.log('Successfully got all videos! Returning...');
-            console.log(response.data)
+            console.log(response.data);
             return response.data;
           })
           .catch(function(err) {
@@ -130,6 +130,19 @@ angular.module('amblr.services', [])
             console.log(err);
           });
       });
+    };
+
+    videoManager.updateLikes = function(fileName, likes) {
+      $http.post('http://127.0.0.1:3000/api/likes', {
+        filename: fileName,
+        likes: likes
+      })
+        .then(function(response) {
+          console.log('Successfully updated likes.');
+        })
+        .catch(function(error) {
+          console.log('Error updating likes', error);
+        });
     };
 
     return videoManager;
