@@ -133,7 +133,7 @@ angular.module('amblr.services', [])
     };
 
     videoManager.updateLikes = function(fileName, likes) {
-      $http.post('http://127.0.0.1:3000/api/likes', {
+      $http.post('http://159.203.228.143:3000/api/likes', {
         filename: fileName,
         likes: likes
       })
