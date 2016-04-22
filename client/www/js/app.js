@@ -15,6 +15,7 @@ angular.module('amblr', [
   'amblr.map', 
   'amblr.addPOI', // TODO: to be deleted
   'amblr.addCapture',
+  'amblr.time',
   'amblr.leftnav',
   'amblr.services',
   'amblr.signin',
