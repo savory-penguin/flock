@@ -73,10 +73,11 @@ angular.module('amblr.services', [])
 
     location.getCurrentPos = function() {
       var position = {};
-      $ionicLoading.show({
-        template: 'Getting current location...',
-        noBackdrop: true
-      });
+      // Prevents template from displaying while polling for new videos
+      // $ionicLoading.show({
+      //   // template: 'Getting current location...',
+      //   noBackdrop: true
+      // });
 
       var options = { timeout: 10000, enableHighAccuracy: true };
       return $cordovaGeolocation.getCurrentPosition(options).then(function(pos) {
