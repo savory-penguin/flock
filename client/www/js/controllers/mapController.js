@@ -137,7 +137,7 @@ angular.module('amblr.map', ['uiGmapgoogle-maps'])
 
     // after map and Video POIs have loaded set broadcast
     $interval(function() {
-      $rootScope.$broadcast('reloadPOIs');
+      $scope.$broadcast('reloadPOIs');
     }, 5000);
   })
   .catch(function(err) {
