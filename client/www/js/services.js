@@ -4,7 +4,7 @@ angular.module('amblr.services', [])
   var POIs = {};
 
   POIs.getPOIs = function() {
-    return $http.get('http://10.6.29.223:3000' + '/api/pois/')
+    return $http.get('http://159.203.228.143:3000' + '/api/pois/')
       .then(function(pois) {
         console.log('returning pois are: ', pois);
         return pois;
@@ -18,7 +18,7 @@ angular.module('amblr.services', [])
   // uses cordova file transfer to send file
   // and other important paramaeters to server
   POIs.savePOI = function(POI, filePath) {
-    var server = 'http://10.6.29.223:3000/api/videos';
+    var server = 'http://159.203.228.143:3000/api/videos';
 
     // var params = {
     //   'lat': pos.lat,
@@ -113,7 +113,7 @@ angular.module('amblr.services', [])
     videoManager.getVideos = function() {
 
       return Location.getCurrentPos().then(function(pos) {
-        return $http.get('http://10.6.29.223:3000/api/videos', {
+        return $http.get('http://159.203.228.143:3000/api/videos', {
             'headers': {
               'Content-Type': 'application/json',
               'lat': pos.lat, // TODO: actual lat
