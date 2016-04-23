@@ -79,7 +79,7 @@ angular.module('amblr.services', [])
       //   noBackdrop: true
       // });
 
-      var options = { timeout: 10000, enableHighAccuracy: true };
+      var options = { timeout: 10000, enableHighAccuracy: true, maximumAge: 30000 };
       return $cordovaGeolocation.getCurrentPosition(options).then(function(pos) {
         console.log('Got pos', pos);
         position.lat = pos.coords.latitude;
