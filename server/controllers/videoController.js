@@ -107,7 +107,7 @@ exports.getAllVideo = function(req, res) {
       $maxDistance: maxDistance
     },
     createdAt: {
-      "$gte": start
+      "$gte": startTime
     }
   }).limit(limit)
     .exec(function(err, locations) {
