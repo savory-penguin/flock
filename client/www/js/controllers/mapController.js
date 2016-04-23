@@ -243,7 +243,7 @@ angular.module('amblr.map', ['uiGmapgoogle-maps'])
                 //the info window only maintains the coords object so I had to store these values in it to pass to the POIInfoWindow template
                 infoWindow.coords.title = videoMarker.title;
                 infoWindow.coords.description = videoMarker.description;
-                infoWindow.coords.filename = $sce.trustAsResourceUrl('http://159.203.228.143:3000/' + videoMarker.filename);
+                infoWindow.coords.filename = $sce.trustAsResourceUrl('http://54.82.255.110:8080/' + videoMarker.filename);
                 infoWindow.coords.likes = videoMarker.likes;
                 infoWindow.coords.likeAlreadyClicked = false;
                 infoWindow.coords.clickLike = function() {
