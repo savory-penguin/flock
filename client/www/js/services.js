@@ -159,4 +159,15 @@ angular.module('amblr.services', [])
     };
 
     return CenterMap;
+  })
+  .service('sharedProperties', function() {
+    var date = new Date();
+    return {
+      getDate: function() {
+        return date;
+      },
+      setDate: function(pickedDate) {
+        date = pickedDate;
+      }
+    };
   });
