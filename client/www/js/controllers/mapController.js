@@ -13,7 +13,7 @@ angular.module('amblr.map', ['uiGmapgoogle-maps'])
 })
 .controller('MapCtrl', function($scope, $state, $cordovaGeolocation, Videos, POIs,
   $ionicLoading, uiGmapGoogleMapApi, uiGmapIsReady, $log, $ionicSideMenuDelegate,
-  $window, Location, $timeout, $location, $sce) {
+  $window, Location, $timeout, $interval, $rootScope, $location, $sce) {
 
   $scope.POIs = [];
 
@@ -134,6 +134,11 @@ angular.module('amblr.map', ['uiGmapgoogle-maps'])
   .then(function(){
     //after the map and POIs have loaded, lets set the current position
     $scope.setMapCenterCurrent();
+
+    // after map and Video POIs have loaded set broadcast
+    $interval(function() {
+      $scope.$broadcast('reloadPOIs');
+    }, 5000);
   })
   .catch(function(err) {
     console.log('error in doing things when map is ready', err);
