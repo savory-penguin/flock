@@ -123,8 +123,8 @@ angular.module('amblr.services', [])
             }
           })
           .then(function(response) {
-            console.log('Successfully got all videos! Returning...');
-            console.log(response.data);
+            console.log('Successfully got all videos! Returning... total video numbers:');
+            console.log(response.data.length);
             return response.data;
           })
           .catch(function(err) {
