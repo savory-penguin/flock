@@ -102,8 +102,7 @@
       <div class="POIbox" id="video-icon">
           <p class="title {{ coords.type }}"> {{ coords.title }} </p>
           <p>Description:  {{ coords.description }}</p>
-          <h6><img src="https://cdn3.iconfinder.com/data/icons/linecons-free-vector-icons-pack/32/like-128.png" height="15" width="15" ng-click="coords.clickLike()"/> {{ coords.likes }} likes </h6>
-          <p>Description:  {{ coords.filename }}</p>
+          <h6><img src={{coords.thumbsUpImage}} height="20" width="20" ng-click="coords.clickLike()"/> {{ coords.likes }} likes </h6>
           <video autoplay width="120" controls='controls'>
             <source src={{coords.filename}} type="video/mp4"/>
           </video>           

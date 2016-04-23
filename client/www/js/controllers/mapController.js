@@ -159,7 +159,7 @@ angular.module('amblr.map', ['uiGmapgoogle-maps'])
 
   $scope.addNewVideos = function() {
 
-    var icon = 'http://i.imgur.com/njCH5Jk.png';
+    var icon = '/img/video.png';
 
     /*
      * Uncomment this code for testing
@@ -250,9 +250,11 @@ angular.module('amblr.map', ['uiGmapgoogle-maps'])
                   if (!infoWindow.coords.likeAlreadyClicked) {
                     infoWindow.coords.likes++;
                     infoWindow.coords.likeAlreadyClicked = true;
+                    infoWindow.coords.thumbsUpImage = '/img/thumb-full.svg';
                     Videos.updateLikes(videoMarker.filename, infoWindow.coords.likes);
                   }
                 };
+                infoWindow.coords.thumbsUpImage = '/img/thumb-empty.svg';
                 infoWindow.show = true;
               }
             }
