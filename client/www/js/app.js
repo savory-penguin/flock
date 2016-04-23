@@ -1,21 +1,28 @@
+/*
+ *  TODO:
+ *    - Inject approriate dependencies into app
+*/
+
 // Ionic Starter App
 
 // angular.module is a global place for creating, registering and retrieving Angular modules
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
 angular.module('amblr', [
-  'ionic', 
+  'ionic',
   'ngCordova',
   'amblr.config',
   'amblr.map', 
-  'amblr.addPOI',
+  'amblr.addPOI', // TODO: to be deleted
+  'amblr.addCapture',
   'amblr.leftnav',
   'amblr.services',
   'amblr.signin',
   'amblr.signup',
-  'amblr.centerMap'
+  'amblr.centerMap',
+  'ngCookies'
 ])
-.run(function($ionicPlatform) {
+.run(function($ionicPlatform, $rootScope, $location, $cookies, $state) {
   $ionicPlatform.ready(function() {
     if (window.cordova && window.cordova.plugins.Keyboard) {
       // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
@@ -31,8 +38,18 @@ angular.module('amblr', [
       StatusBar.styleDefault();
     }
   });
+  
+  $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
+  // when changing states, check if authentication is required
+    if (toState.authenticate === true && !$cookies.get('connect.sid')) {
+      // If logged out and transitioning to a logged in page, go home instead
+      event.preventDefault();
+      $state.go('menu.home');
+    }
+  });
 })
-.config(function($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
+
+.config(function($stateProvider, $urlRouterProvider, $ionicConfigProvider, $httpProvider) {
 
   //force android to keep tabs at bottom
   $ionicConfigProvider.platform.android.tabs.position('bottom');
@@ -54,11 +71,13 @@ angular.module('amblr', [
   })
 
   .state('menu-private', {
+    authenticate: true,
     url: '/menu-private',
     abstract: true,
     templateUrl: 'templates/menu-private.html',
   })
   .state('menu-private.home', {
+    authenticate: true,
     url: '/home',
     views: {
       'view-content-private': {
@@ -67,7 +86,7 @@ angular.module('amblr', [
       }
     }
   })
-  .state('menu.addPOI', {
+  .state('menu.addPOI', { // TODO: no longer using 
     url: '/addPOI',
     views: {
       'view-content': {
@@ -83,7 +102,4 @@ angular.module('amblr', [
     controller: 'testCtrl'
   });
   $urlRouterProvider.otherwise('/menu/home');
-
 });
-
-

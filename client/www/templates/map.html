@@ -1,4 +1,5 @@
-
+  <!-- TODO:
+    - Refactor to use 'video markers' instead of POI markers -->
 <!-- 
 data-tab-disabled needed to stop ios from dragging the whole content area around when dragging map.
 overflow-scroll false needed to stop android from showing a scroll bar.
@@ -11,18 +12,19 @@ Map icons taken from: Maps Icons Collection https://mapicons.mapsmarker.com
 
       <!-- use external info window so only one exists for all markers -->
       <ui-gmap-window show="map.infoWindow.show" coords="map.infoWindow.coords" templateUrl="map.infoWindow.templateUrl" templateParameter="map.infoWindow" isIconVisibleOnClick="false" options="map.infoWindow.options" closeClick='closeInfoWindowClick()' ng-cloak>
+
       </ui-gmap-window>
 
-       <ui-gmap-window show="map.droppedInfoWindow.show" coords="map.droppedInfoWindow.coords"
+<!--        <ui-gmap-window show="map.droppedInfoWindow.show" coords="map.droppedInfoWindow.coords"
                 options="map.droppedInfoWindow.options"
                 templateUrl="map.droppedInfoWindow.templateUrl"
                 templateParameter="map.droppedInfoWindow.templateParameter" closeClick='closeInfoWindowClick()' ng-cloak>
-        </ui-gmap-window>
+        </ui-gmap-window> -->
      
-      <ui-gmap-markers models='map.POIMarkers' coords="'self'" icon="'icon'">
+      <ui-gmap-markers models='map.videoMarkers' coords="'self'" icon="'icon'" events='events'>
       </ui-gmap-markers>
 
-      <ui-gmap-marker coords='dropMarker.coords' options='dropMarker.options' events='dropMarker.events' idkey='dropMarker.id'>
+      <!-- <ui-gmap-marker coords='dropMarker.coords' options='dropMarker.options' events='dropMarker.events' idkey='dropMarker.id'> -->
  
     </ui-gmap-google-map>
 </ion-content>

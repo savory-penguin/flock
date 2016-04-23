@@ -1,3 +1,8 @@
+/*
+ *  Refactor so that markers show up for videos
+ *  Update associated functions
+*/
+
 angular.module('amblr.map', ['uiGmapgoogle-maps'])
 .config(function($stateProvider, $urlRouterProvider, uiGmapGoogleMapApiProvider) {
   uiGmapGoogleMapApiProvider.configure({
@@ -6,9 +11,9 @@ angular.module('amblr.map', ['uiGmapgoogle-maps'])
     libraries: 'weather,geometry,visualization'
   });
 })
-.controller('MapCtrl', function($scope, $state, $cordovaGeolocation, POIs,
+.controller('MapCtrl', function($scope, $state, $cordovaGeolocation, Videos, POIs,
   $ionicLoading, uiGmapGoogleMapApi, uiGmapIsReady, $log, $ionicSideMenuDelegate,
-  $window, Location, $timeout, $location) {
+  $window, Location, $timeout, $interval, $rootScope, $location, $sce, sharedProperties) {
 
   $scope.POIs = [];
 
@@ -50,32 +55,33 @@ angular.module('amblr.map', ['uiGmapgoogle-maps'])
     zoom: 15,
     control: {},
     POIMarkers: [], // array of marker models, used by ui-gmap-markers in map.html
-    events: {
-      mousedown: function (map, eventName, originalEventArgs) {
+    videoMarkers: [], // array of video marker models
+    // events: {
+    //   mousedown: function (map, eventName, originalEventArgs) {
 
-        var e = originalEventArgs[0];
+    //     var e = originalEventArgs[0];
 
-        if(angular.isUndefined($scope.placeMarkerPromise)) {
-          $scope.placeMarkerPromise = $timeout(
-            function placeMarkerDelayed() {
-              $scope.placeMarker(e.latLng);
-            }, 1000);
-        }
+    //     if(angular.isUndefined($scope.placeMarkerPromise)) {
+    //       $scope.placeMarkerPromise = $timeout(
+    //         function placeMarkerDelayed() {
+    //           $scope.placeMarker(e.latLng);
+    //         }, 1000);
+    //     }
 
-        $scope.map.infoWindow.show = false;
+    //     $scope.map.infoWindow.show = false;
 
-        $scope.$apply();
+    //     $scope.$apply();
 
-      },
-      mouseup: function (map, eventName, originalEventArgs) {
-        //if user mouses up before marker dropped, cancel it
-        $scope.placeMarkerCancel();
-      }, 
-      dragstart: function (map, eventName, originalEventArgs) {
-        //if user starts to drag map before marker is dropped, cancel it
-        $scope.placeMarkerCancel();
-      }
-    },
+    //   },
+    //   mouseup: function (map, eventName, originalEventArgs) {
+    //     //if user mouses up before marker dropped, cancel it
+    //     $scope.placeMarkerCancel();
+    //   },
+    //   dragstart: function (map, eventName, originalEventArgs) {
+    //     //if user starts to drag map before marker is dropped, cancel it
+    //     $scope.placeMarkerCancel();
+    //   }
+    // },
     options: {
       scrollwheel: false
     },
@@ -94,24 +100,24 @@ angular.module('amblr.map', ['uiGmapgoogle-maps'])
           pixelOffset: new $window.google.maps.Size(0, -35)
         },
         show: false,
-        templateUrl: '../../templates/POIInfoWindow.html',
+        templateUrl: 'videoinfo.html',
     },
-    droppedInfoWindow: {
-        coords: {
-          latitude: 37.786439,
-          longitude: -122.408199
-        },
-        options: {
-          disableAutoPan: false,
-          // use pixelOffset to move the InfoWindow above the marker icon
-          pixelOffset: new $window.google.maps.Size(0, -35),
-        },
-        show: false,
-        templateUrl: '../../templates/addPOIInfoWindow.html',
-        templateParameter: {
-          currentPOI: $scope.currentPOI
-        },
-    }
+    // droppedInfoWindow: {
+    //     coords: {
+    //       latitude: 37.786439,
+    //       longitude: -122.408199
+    //     },
+    //     options: {
+    //       disableAutoPan: false,
+    //       // use pixelOffset to move the InfoWindow above the marker icon
+    //       pixelOffset: new $window.google.maps.Size(0, -35),
+    //     },
+    //     show: false,
+    //     templateUrl: '../../templates/addPOIInfoWindow.html',
+    //     templateParameter: {
+    //       currentPOI: $scope.currentPOI
+    //     },
+    // }
   };
 
   //use a promise to tell when the map is ready to be interacted with
@@ -122,11 +128,17 @@ angular.module('amblr.map', ['uiGmapgoogle-maps'])
 
     // retrieve all the POIs from server and place them on map
     $scope.addNewPOIs();
+    $scope.addNewVideos();
 
   })
   .then(function(){
     //after the map and POIs have loaded, lets set the current position
     $scope.setMapCenterCurrent();
+
+    // after map and Video POIs have loaded set broadcast
+    $interval(function() {
+      $scope.$broadcast('reloadPOIs');
+    }, 5000);
   })
   .catch(function(err) {
     console.log('error in doing things when map is ready', err);
@@ -140,7 +152,123 @@ angular.module('amblr.map', ['uiGmapgoogle-maps'])
   */
   $scope.closeInfoWindowClick = function() {
     $scope.map.infoWindow.show = false;
-    $scope.map.droppedInfoWindow.show = false;
+    // $scope.map.droppedInfoWindow.show = false;
+  };
+
+  $scope.videoMarkers = [];
+
+  $scope.addNewVideos = function() {
+
+    var icon = 'http://i.imgur.com/njCH5Jk.png';
+
+    /*
+     * Uncomment this code for testing
+
+     $scope.map.videoMarkers = [
+       {
+         id: 1,
+         latitude: 37.7854,
+         longitude: -122.4244,
+         icon: icon,
+         description: 'video',
+         title: 'video',
+         events: {
+           click: function(map, eventName, videoMarker) {
+             alert(videoMarker.title);
+           }
+         }
+       },
+       {
+         id: 2,
+         latitude: 37.7893,
+         longitude: -122.4154,
+         icon: icon,
+         description: 'video',
+         title: 'video',
+         events: {
+           click: function(map, eventName, videoMarker) {
+             alert(videoMarker.title);
+           }
+         }
+       },
+       {
+         id: 3,
+         latitude: 37.7819,
+         longitude: -122.4139,
+         icon: icon,
+         description: 'video',
+         title: 'video',
+         events: {
+           click: function(map, eventName, videoMarker) {
+             alert(videoMarker.title);
+           }
+         }
+       }
+     ];
+     return;
+    */
+
+    Videos.getVideos(sharedProperties.getDate().getTime())
+      .then(function(videos) {
+        console.log('your videos from the server mapcontroller.js ');
+        console.log(videos);
+        $scope.videoMarkers = videos;
+        var videoMarkers = [];
+
+        for (var i = 0; i < $scope.videoMarkers.length; i++) {
+          videoMarkers.push({
+            id: i,
+            latitude: $scope.videoMarkers[i].loc[1],
+            longitude: $scope.videoMarkers[i].loc[0],
+            icon: icon,
+            description: $scope.videoMarkers[i].description,
+            title: $scope.videoMarkers[i].title,
+            filename: $scope.videoMarkers[i].filename,
+            likes: $scope.videoMarkers[i].likes || 0,
+            events: {
+              click: function (map, eventName, videoMarker) {
+                  
+                var lat = videoMarker.latitude;
+                var lon = videoMarker.longitude;
+                var infoWindow = $scope.map.infoWindow;
+
+
+                infoWindow.coords.latitude = lat;
+                infoWindow.coords.longitude = lon;
+
+                //these are not getting passed to the POI Info Window template
+                infoWindow.title = videoMarker.title;
+                infoWindow.description = videoMarker.description;
+
+                //the info window only maintains the coords object so I had to store these values in it to pass to the POIInfoWindow template
+                infoWindow.coords.title = videoMarker.title;
+                infoWindow.coords.description = videoMarker.description;
+                infoWindow.coords.filename = $sce.trustAsResourceUrl('http://54.82.255.110:8080/' + videoMarker.filename);
+                infoWindow.coords.likes = videoMarker.likes;
+                infoWindow.coords.likeAlreadyClicked = false;
+                infoWindow.coords.clickLike = function() {
+                  if (!infoWindow.coords.likeAlreadyClicked) {
+                    infoWindow.coords.likes++;
+                    infoWindow.coords.likeAlreadyClicked = true;
+                    infoWindow.coords.thumbsUpImage = 'http://image005.flaticon.com/1/svg/119/119959.svg';
+                    Videos.updateLikes(videoMarker.filename, infoWindow.coords.likes);
+                  }
+                };
+                infoWindow.coords.thumbsUpImage = 'http://image005.flaticon.com/1/svg/109/109667.svg';
+                infoWindow.show = true;
+              }
+            }
+          });
+        }
+
+        $scope.map.videoMarkers = videoMarkers;
+
+        console.log('adding video markers');
+        console.log($scope.map.videoMarkers);
+      })
+      .catch(function(error) {
+        console.log('Error calling getVideos', error);
+      });
   };
   
   $scope.addNewPOIs = function () {
@@ -180,9 +308,9 @@ angular.module('amblr.map', ['uiGmapgoogle-maps'])
 
         var icon = '';
         if ($scope.POIs[i].type === 'good') {
-           icon = '../../img/star-3.png'
+           icon = '../../img/star-3.png';
         } else {
-           icon = '../../img/pirates.png'
+           icon = '../../img/pirates.png';
         }
 
         markers.push({
@@ -253,6 +381,12 @@ angular.module('amblr.map', ['uiGmapgoogle-maps'])
   });
   $scope.$on('reloadPOIs', function() {
     $scope.addNewPOIs();
+    $scope.addNewVideos();
+  });
+  $scope.$on('newDatePicked', function() {
+    console.log('here is the sharedProperties fired in mapController', sharedProperties.getDate());
+    // $scope.addNewPOIs();
+    $scope.addNewVideos();
   });
 
   // delete the user added marker (dropMarker object)
@@ -350,6 +484,7 @@ angular.module('amblr.map', ['uiGmapgoogle-maps'])
         // $window.location.reload();
         $scope.removeMarker();
         $scope.addNewPOIs();
+        $scope.addNewVideos();
       })
       .catch(function(err) {
         console.log('error in saving poi to database', err);
