@@ -1,5 +1,10 @@
 angular.module('amblr.leftnav', ['ionic', 'ionic-datepicker'])
 .controller('LeftMenuNav', function($scope, $ionicPopover, $ionicSideMenuDelegate, ionicDatePicker) {
+  // default date to today
+  var today = new Date();
+  today = (today.getMonth() + 1) + '/' + today.getDate() + '/' +  today.getFullYear();
+  $scope.pickDate = today;
+
   $scope.showMenu = function () {
     $ionicSideMenuDelegate.toggleLeft();
   };
@@ -8,7 +13,10 @@ angular.module('amblr.leftnav', ['ionic', 'ionic-datepicker'])
   // https://github.com/rajeshwarpatlolla/ionic-datepicker
   var ipObj1 = {
     callback: function (val) {  //Mandatory
-      console.log('Return value from the datepicker popup is : ' + val, new Date(val));
+      var date = new Date(val);
+      date = (date.getMonth() + 1) + '/' + date.getDate() + '/' +  date.getFullYear();
+      console.log(date);
+      $scope.pickDate = date;
     },
     from: new Date(2012, 1, 1), //Optional
     to: new Date(),             //Optional
