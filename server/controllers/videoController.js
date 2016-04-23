@@ -93,7 +93,7 @@ exports.getAllVideo = function(req, res) {
   //   });
 
   var limit = 25;
-  var maxDistance = 0.5; // in kilometers
+  var maxDistance = 10; // in kilometers
   maxDistance /= 100; // there are approx 100 kilometers in a degree of lat or long
   // maxDistance /= 6371; // converting to radians, this is some stack overflow nonsense that does not work
 
