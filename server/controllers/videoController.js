@@ -100,14 +100,19 @@ exports.getAllVideo = function(req, res) {
   var coords = [];
   coords[0] = req.headers.long;
   coords[1] = req.headers.lat;
-  startTime = parseInt(req.headers.picked) - 43200000 || (new Date()).getTime();
+  var milSecPerDay = 86400000;
+  startTime = parseInt(req.headers.picked) - milSecPerDay || (new Date()).getTime();
+  endTime = parseInt(req.headers.picked) || (new Date()).getTime();
+  logger.info('Here is the startTime', startTime);
+  logger.info('Here is the endTime', endTime);
   Video.find({
     loc: {
       $near: coords,
       $maxDistance: maxDistance
     },
     createdAt: {
-      "$gte": startTime
+      "$gte": startTime,
+      "$lte": endTime
     }
   }).limit(limit)
     .exec(function(err, locations) {
