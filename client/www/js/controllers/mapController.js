@@ -13,7 +13,7 @@ angular.module('amblr.map', ['uiGmapgoogle-maps'])
 })
 .controller('MapCtrl', function($scope, $state, $cordovaGeolocation, Videos, POIs,
   $ionicLoading, uiGmapGoogleMapApi, uiGmapIsReady, $log, $ionicSideMenuDelegate,
-  $window, Location, $timeout, $interval, $rootScope, $location, $sce) {
+  $window, Location, $timeout, $interval, $rootScope, $location, $sce, sharedProperties) {
 
   $scope.POIs = [];
 
@@ -208,9 +208,9 @@ angular.module('amblr.map', ['uiGmapgoogle-maps'])
      return;
     */
 
-    Videos.getVideos()
+    Videos.getVideos(sharedProperties.getDate().getTime())
       .then(function(videos) {
-        console.log('your videos from mapcontroller ')
+        console.log('your videos from the server mapcontroller.js ');
         console.log(videos);
         $scope.videoMarkers = videos;
         var videoMarkers = [];
@@ -381,6 +381,11 @@ angular.module('amblr.map', ['uiGmapgoogle-maps'])
   });
   $scope.$on('reloadPOIs', function() {
     $scope.addNewPOIs();
+    $scope.addNewVideos();
+  });
+  $scope.$on('newDatePicked', function() {
+    console.log('here is the sharedProperties fired in mapController', sharedProperties.getDate());
+    // $scope.addNewPOIs();
     $scope.addNewVideos();
   });
 
