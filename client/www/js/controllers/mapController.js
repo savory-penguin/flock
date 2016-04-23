@@ -207,11 +207,11 @@ angular.module('amblr.map', ['uiGmapgoogle-maps'])
      ];
      return;
     */
-
+    console.log('running Videos.getVideos, and here is the pickedDate');
+    console.log(sharedProperties.getDate());
     Videos.getVideos(sharedProperties.getDate().getTime())
       .then(function(videos) {
-        console.log('your videos from the server mapcontroller.js ');
-        console.log(videos);
+        console.log('your videos from the server mapcontroller.js got videos going to map the videos...');
         $scope.videoMarkers = videos;
         var videoMarkers = [];
 
@@ -263,8 +263,8 @@ angular.module('amblr.map', ['uiGmapgoogle-maps'])
 
         $scope.map.videoMarkers = videoMarkers;
 
-        console.log('adding video markers');
-        console.log($scope.map.videoMarkers);
+        console.log('adding video markers below. Total number of markers:');
+        console.log($scope.map.videoMarkers.length);
       })
       .catch(function(error) {
         console.log('Error calling getVideos', error);
@@ -384,7 +384,8 @@ angular.module('amblr.map', ['uiGmapgoogle-maps'])
     $scope.addNewVideos();
   });
   $scope.$on('newDatePicked', function() {
-    console.log('here is the sharedProperties fired in mapController', sharedProperties.getDate());
+    console.log('here is the sharedProperties fired in mapController');
+    console.log(sharedProperties.getDate());
     // $scope.addNewPOIs();
     $scope.addNewVideos();
   });
