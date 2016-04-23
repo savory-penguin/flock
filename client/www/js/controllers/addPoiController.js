@@ -97,13 +97,13 @@ angular.module('amblr.addPOI', ['ngCordova'])
       $scope.modal.hide();
     };
     //toggles View of modal form depending on state
-    $scope.toggleView = function() {
-      if ($scope.modal.isShown()) {
-        $scope.closeForm();
-      } else {
-        $scope.openForm();
-      }
-    };
+    // $scope.toggleView = function() {
+    //   if ($scope.modal.isShown()) {
+    //     $scope.closeForm();
+    //   } else {
+    //     $scope.openForm();
+    //   }
+    // };
 
     $scope.captureVideo = function() {
       // var server = 'http://localhost:3000/api/videos'; // development
@@ -150,10 +150,10 @@ angular.module('amblr.addPOI', ['ngCordova'])
     };
 
     $scope.showVideos = function() {
-      Videos.getVideos().then(function(allVids) {
+      Videos.getVideos((new Date()).getTime()).then(function(allVids) {
         console.log('here are all your vids: ', allVids);
       });
-    }
+    };
 
     //clean up modal when done
     $scope.$on('$destroy', function() {

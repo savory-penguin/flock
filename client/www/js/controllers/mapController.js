@@ -208,9 +208,9 @@ angular.module('amblr.map', ['uiGmapgoogle-maps'])
      return;
     */
 
-    Videos.getVideos()
+    Videos.getVideos((new Date()).getTime())
       .then(function(videos) {
-        console.log('your videos from mapcontroller ')
+        console.log('your videos from the server mapcontroller.js ');
         console.log(videos);
         $scope.videoMarkers = videos;
         var videoMarkers = [];
