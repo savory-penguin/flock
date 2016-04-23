@@ -111,14 +111,15 @@ angular.module('amblr.services', [])
       });
     };
 
-    videoManager.getVideos = function() {
+    videoManager.getVideos = function(pickedDate) {
 
       return Location.getCurrentPos().then(function(pos) {
         return $http.get('http://159.203.228.143:3000/api/videos', {
             'headers': {
               'Content-Type': 'application/json',
-              'lat': pos.lat, // TODO: actual lat
-              'long': pos.long // TODO: actual long
+              'lat': pos.lat,
+              'long': pos.long,
+              'picked': pickedDate
             }
           })
           .then(function(response) {
