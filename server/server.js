@@ -13,7 +13,7 @@ var likesRouter = require('./routers/likesRouter.js');
 
 // configuration variables for server port and mongodb URI
 var port = process.env.PORT || 8080;
-var dbUri = process.env.MONGOLAB_URI || 'mongodb://localhost/app_database';
+var dbUri = 'mongodb://127.0.0.1:27017/app_database';
 var env = process.env.NODE_ENV || 'production';
 
 //create connection to mongodb
