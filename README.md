@@ -1,84 +1,101 @@
-# Amblr
-When you’re walking around the city, you want to enjoy the fun and interesting things and avoid the dangerous / gross stuff. Amblr lets you share points of interest with other users and lets you see what other have added. It’s kind of like Waze, but for walkers.
+![](https://dl.dropboxusercontent.com/s/2xhujbw3906phvr/banner-128.png?dl=0) 
+---
 
-## Team
+# flock ![Stablity Status](https://img.shields.io/pypi/status/Django.svg?maxAge=25920000)
 
-  - __Product Owner__: Toben
-  - __Scrum Master__: Alex
-  - __Development Team Members__: Trini, Bryan
+Flock is a way to see the city through other people's eyes. Store and view videos at your location, across time. 
 
-## Table of Contents
+Supported operating systems are >= iOS 7.0 and >= Android 6.0
+Flock is a fork of [amblr](http://github.com/mediocreokra/amblr)
 
-1. [Usage](#Usage)
-1. [Requirements](#requirements)
-1. [Development](#development)
-    1. [Installing Dependencies](#installing-dependencies)
-    1. [Tasks](#tasks)
-1. [Team](#team)
-1. [Contributing](#contributing)
+- [Team Members](#team-members-v-15)
+- [Technology Stack](#technology-stack-apis-and-third-party-tools)
+- [Client Framework](#client-ionic)
+- [Server Setup](#server-node--express)
+- [Challenges](#challenges)
+- [Changes from v. 1.0](#changes-from-v-10)
+- [Future Feature Extensions](#future-feature-extensions)
 
-## Usage
+## Team Members (v. 1.5)
+[![Nathaniel Edwards](https://dl.dropboxusercontent.com/s/9dzxid7ihg37c97/nthaniel.png?dl=0)](https://github.com/nthaniel)
 
-When you load the app, you'll see a Google Map where you can add a point of interest (POI) at your current location by clicking a menu link or at any location by touching and holding on the map for 1 second. After adding a POI, you can add details and save it to the database. Touch existing POIs to see the details.
+[![Michelle He](https://dl.dropboxusercontent.com/s/zecyw2vna8m56d3/michelleheh.png?dl=0)](https://github.com/michelleheh)
 
-Sign In and Sign Out features are implemented with Passport.js, but they do not restrict user functions yet.
+[![Rahim Dharrsi](https://dl.dropboxusercontent.com/s/3typmiqn3wv8f8k/rahimftd.png?dl=0)](https://github.com/rahimftd)
 
-## Requirements
+[![Kevin Nguyen](https://dl.dropboxusercontent.com/s/wyebxbavnc7ihk7/kevinwin.png?dl=0)](https://github.com/kevinwin)
+  
+## Technology Stack, APIs, and Third-party tools
 
-### Stack
-- MongoDB 2.1.16
-- Express 4.13.4
-- Angular 1.4.3 with Ionic 1.2.4
-- Node 4.4.2
-- Google Maps API
-
-### NPM Modules and Bower Components
-
-For complete details, see package.json files in Server and Client folders, and bower.json in Client folder.
-
-### What's Ionic?
-
-In case you're curious about the mobile technologies:
+- [Ionic](http://ionicframework.com)
+- Node.js & [Express](http://expressjs.com/)
+- [MongoDB](https://www.mongodb.org/) and [Mongoose](http://mongoosejs.com/)
+- [Digital Ocean](https://www.digitalocean.com/)
+- [Angular Google Maps](https://angular-ui.github.io/angular-google-maps/)
+- [$cordovaCapture](http://ngcordova.com/docs/plugins/capture)
+- [$cordovaFileTransfer](http://ngcordova.com/docs/plugins/fileTransfer)
 
 
-Ionic - A mobile development framework for Angular.js - see the [official site] (http://ionicframework.com/) and [this blog post] (http://blog.ionic.io/where-does-the-ionic-framework-fit-in/)
+## Client: Ionic
 
+To get started with Ionic in Flock, follow these steps as needed.
 
-Cordova - Cordova wraps your HTML/JavaScript app into a native container which can access the device functions of several platforms (phones, tablets, browsers) -  See [http://cordova.apache.org/] (http://cordova.apache.org/)
+1. Install NPM and Bower
+2. Inside the `client` folder, run `npm install` and `bower install`
+3. Install cordova and ionic globally. Run `npm install -g cordova ionic`
+4. Add all platforms (inside the client folder):
 
-
-## Development
-
-### File Structure
-
-See the [file structure] (https://github.com/mediocreokra/amblr/blob/master/_FILE-STRUCTURE.MD) for a guide to what's included.
-
-### Logging
-
-Server logging will be done both in the console and to /server/logs/log.log.
-Log level can be configured in /server/config/logger.js
-
-### Installing Dependencies
-
-From within the ```client``` directory:
-
-```sh
-npm install
-bower install
+For Android:
+```
+ionic platform add android
+ionic build android
 ```
 
-From within the ```server``` directory:
+For iOS:
+```
+ionic platform add ios
+ionic build ios
 
-```sh
+```
+
+* iOS users need to run `cordova prepare` when making changes to the client before porting to real devices
+
+5. [Port your application on real devices](http://www.neilberry.com/how-to-run-your-ionic-app-on-real-devices/)
+
+## Server: Node & Express
+
+To run server code locally:
+
+```
+# the server folder
+
 npm install
 grunt server-dev
 ```
 
-### Roadmap
-
-View the current issues list [here](https://github.com/mediocreokra/amblr/issues)
 
 
-## Contributing
+## Challenges
 
-See [CONTRIBUTING.md](https://github.com/mediocreokra/amblr/blob/master/_CONTRIBUTING.md) for contribution guidelines.
+- Transcoding video files. Ubuntu 14.04 doesn't come preloaded with ffmpeg
+- Deployment and porting to phone
+- Ionic. Modals and icons didn't work as expected for mobile without workarounds
+- Navigating ionic, cordov
+
+## Changes from v. 1.0
+
+- POI markers now use video camera icons exclusively
+- File upload handling on the server-side
+- Geofencing. Videos only appear within a certain radius
+- Calendar / Time Filter
+- Likes
+- New server endpoints for likes and videos
+
+## Future Feature Extensions
+- File encoding
+- Add better support for both Android and iOS phones
+- Landmarks. Add the ability to drop a pin and request videos in that location
+- Clustering videos that fall within certain boundaries 
+- Form Validation
+
+
