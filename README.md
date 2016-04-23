@@ -92,6 +92,8 @@ grunt server-dev
 - New server endpoints for likes and videos
 
 ## Future Feature Extensions
+- File encoding
+- Add better support for both Android and iOS phones
 - Landmarks. Add the ability to drop a pin and request videos in that location
 - Clustering videos that fall within certain boundaries 
 - Form Validation
